@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snapbooth — Staff</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-body">
+
+<!-- ============ LOGIN VIEW ============ -->
+<div class="admin-shell" id="loginView">
+  <div class="admin-login">
+    <h1>Staff Panel</h1>
+    <p>Sign in to edit the strip design and booth settings.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+      <div class="error-msg" id="loginError"></div>
+    </form>
+    <p class="small-note" style="margin-top:16px;">
+      Are you an Admin? Contact ??? for info
+    </p>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD VIEW ============ -->
+<div class="admin-shell" id="dashView" style="display:none;">
+  <div class="admin-topbar">
+    <div>
+      <h1>Booth control room</h1>
+      <div class="sub" id="signedInAs"></div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a href="index.html" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">View booth ↗</a>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </div>
+
+  <div class="tabnav">
+    <button class="tab-btn active" data-tab="branding">Branding</button>
+    <button class="tab-btn" data-tab="strip">Strip design</button>
+    <button class="tab-btn" data-tab="session">Session rules</button>
+    <button class="tab-btn" data-tab="account">Account & data</button>
+  </div>
+
+  <!-- BRANDING -->
+  <div class="tab-panel active" id="tab-branding">
+    <div class="panel">
+      <h2>Booth branding</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label for="brandTitle">Booth name (shown as the marquee title)</label>
+          <input type="text" id="brandTitle" maxlength="40">
+        </div>
+        <div class="field">
+          <label for="tagline">Tagline</label>
+          <input type="text" id="tagline" maxlength="80">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRIP DESIGN -->
+  <div class="tab-panel" id="tab-strip">
+    <div class="panel">
+      <h2>Strip colors</h2>
+      <div class="grid-3">
+        <div class="field">
+          <label>Paper background</label>
+          <div class="color-swap-row">
+            <input type="color" id="stripBg">
+            <span class="swatch-label" id="stripBgVal"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Frame / ink color</label>
+          <div class="color-swap-row">
+            <input type="color" id="stripFrame">
+            <span class="swatch-label" id="stripFrameVal"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Accent rule color</label>
+          <div class="color-swap-row">
+            <input type="color" id="stripAccent">
+            <span class="swatch-label" id="stripAccentVal"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Strip text & logo</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label for="stripHeader">Header text (used if no logo is uploaded)</label>
+          <input type="text" id="stripHeader" maxlength="24">
+        </div>
+        <div class="field">
+          <label for="stripFooter">Footer text — use <code>{date}</code> to insert the print date</label>
+          <input type="text" id="stripFooter" maxlength="60">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Show print date</div>
+            <div class="toggle-desc">Adds today's date to the footer automatically</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="showDate"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Film perforations</div>
+            <div class="toggle-desc">Little punched holes down each edge of the strip</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="showPerf"><span class="slider"></span></label>
+        </div>
+      </div>
+      <div class="field" style="margin-top:6px;">
+        <label>Logo (replaces header text when uploaded)</label>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="logo-preview" id="logoPreview">no logo</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <input type="file" id="logoInput" accept="image/png,image/jpeg,image/svg+xml">
+            <button class="btn btn-danger btn-sm" id="clearLogoBtn" type="button">Remove logo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Live preview</h2>
+      <div class="strip-preview-box" id="stripPreviewBox"></div>
+    </div>
+  </div>
+
+  <!-- SESSION RULES -->
+  <div class="tab-panel" id="tab-session">
+    <div class="panel">
+      <h2>Shots per strip</h2>
+      <div class="field">
+        <label for="shotOptions">Shot count choices (comma separated, e.g. 3,4,5)</label>
+        <input type="text" id="shotOptions">
+      </div>
+      <div class="field">
+        <label for="defaultShots">Default shot count</label>
+        <select id="defaultShots"></select>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Let guests choose shot count</div>
+          <div class="toggle-desc">If off, every strip uses the default above</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="allowChooseShots"><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Countdown</h2>
+      <div class="field" style="max-width:200px;">
+        <label for="countdownSeconds">Seconds before each shot</label>
+        <input type="number" id="countdownSeconds" min="1" max="10">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Filters</h2>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Let guests choose a filter</div>
+          <div class="toggle-desc">If off, every strip uses the default filter below</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="allowChooseFilter"><span class="slider"></span></label>
+      </div>
+      <div class="field">
+        <label for="defaultFilter">Default filter</label>
+        <select id="defaultFilter"></select>
+      </div>
+      <p class="small-note">The filter set (Classic / B&W / Sepia / Vintage) is built in. Editing individual filters isn't available yet — let us know if you need custom looks.</p>
+    </div>
+  </div>
+
+  <!-- ACCOUNT & DATA -->
+  <div class="tab-panel" id="tab-account">
+    <div class="panel">
+      <h2>Change password</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label for="curPass">Current password</label>
+          <input type="password" id="curPass" autocomplete="current-password">
+        </div>
+        <div class="field">
+          <label for="newUser">New username</label>
+          <input type="text" id="newUser" autocomplete="username">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="newPass">New password</label>
+          <input type="password" id="newPass" autocomplete="new-password">
+        </div>
+        <div class="field">
+          <label for="newPass2">Confirm new password</label>
+          <input type="password" id="newPass2" autocomplete="new-password">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" id="changeCredsBtn" type="button">Update login</button>
+      <div class="error-msg" id="credsMsg"></div>
+      <p class="small-note" style="margin-top:14px;">
+        This login only hides the settings screen from casual guests at your event — it's checked in the browser, not on a server, so treat it as a light kiosk lock rather than real account security. Don't reuse a password you use elsewhere.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2>Backup & reset</h2>
+      <p class="small-note">Settings are saved in this browser only. Export a backup to move them to another device, or before clearing browser data.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+        <button class="btn btn-ghost btn-sm" id="exportBtn" type="button">Export settings (.json)</button>
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+          Import settings
+          <input type="file" id="importInput" accept="application/json" style="display:none;">
+        </label>
+        <button class="btn btn-danger btn-sm" id="resetBtn" type="button">Reset to defaults</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <span class="small-note" id="saveHint" style="align-self:center;"></span>
+    <button class="btn btn-primary" id="saveBtn">Save changes</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
