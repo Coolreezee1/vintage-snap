@@ -300,7 +300,7 @@ function buildStrip() {
     drawHeaderWithLogo(ctx, cfg, stripWidth, headerH);
   } else {
     ctx.font = '700 30px Anton, Arial Narrow, sans-serif';
-    ctx.fillText(cfg.headerText || settings.brandTitle || 'SNAPBOOTH', stripWidth / 2, headerH / 2 + 6, stripWidth - margin * 2);
+    ctx.fillText(cfg.headerText || settings.brandTitle || 'VINTAGESNAP', stripWidth / 2, headerH / 2 + 6, stripWidth - margin * 2);
   }
 
   // accent rule under header
@@ -358,7 +358,7 @@ function drawHeaderWithLogo(ctx, cfg, stripWidth, headerH) {
   // draw synchronously if already cached; else fall back to text now and redraw when loaded
   const drawText = () => {
     ctx.font = '700 30px Anton, Arial Narrow, sans-serif';
-    ctx.fillText(cfg.headerText || 'SNAPBOOTH', stripWidth / 2, headerH / 2 + 6);
+    ctx.fillText(cfg.headerText || 'VINTAGESNAP', stripWidth / 2, headerH / 2 + 6);
   };
   if (img.complete && img.naturalWidth) {
     const h = headerH - 20;
@@ -424,7 +424,7 @@ downloadBtn.addEventListener('click', () => {
   const canvas = stripCanvasWrap.querySelector('canvas');
   if (!canvas) return;
   const link = document.createElement('a');
-  link.download = `${(settings.brandTitle || 'snapbooth').toLowerCase().replace(/\s+/g, '-')}-strip.png`;
+  link.download = `${(settings.brandTitle || 'vintagesnap').toLowerCase().replace(/\s+/g, '-')}-strip.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
   showToast('Strip saved to your downloads.');
