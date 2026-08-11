@@ -1,5 +1,5 @@
 /* =========================================================================
-   SNAPBOOTH — admin logic
+   VINTAGESNAP — admin logic
    Client-side only. The login gate is a convenience lock for kiosk use,
    not a secure authentication system — see the note in the Account tab.
 ========================================================================= */
@@ -27,7 +27,7 @@ const DEFAULT_SETTINGS = {
     background: '#f3ead8',
     frameColor: '#241f1b',
     accentColor: '#e8a33d',
-    headerText: 'SNAPBOOTH',
+    headerText: 'VINTAGESNAP',
     footerText: '{date}',
     showDate: true,
     showPerforations: true,
@@ -264,7 +264,7 @@ function collectSettingsFromForm() {
   settings.strip.background = f.stripBg.value;
   settings.strip.frameColor = f.stripFrame.value;
   settings.strip.accentColor = f.stripAccent.value;
-  settings.strip.headerText = f.stripHeader.value.trim() || 'SNAPBOOTH';
+  settings.strip.headerText = f.stripHeader.value.trim() || 'VINTAGESNAP';
   settings.strip.footerText = f.stripFooter.value;
   settings.strip.showDate = f.showDate.checked;
   settings.strip.showPerforations = f.showPerf.checked;
@@ -337,7 +337,7 @@ function buildPreviewStrip(cfgAll, shotCount) {
 
   const drawHeader = () => {
     ctx.font = '700 20px Anton, Arial Narrow, sans-serif';
-    ctx.fillText(cfg.headerText || 'SNAPBOOTH', stripWidth / 2, headerH / 2 + 4, stripWidth - margin * 2);
+    ctx.fillText(cfg.headerText || 'VINTAGESNAP', stripWidth / 2, headerH / 2 + 4, stripWidth - margin * 2);
     drawRuleAndBody();
   };
 
@@ -460,7 +460,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'snapbooth-settings.json';
+  a.download = 'vintagesnap-settings.json';
   a.click();
 });
 
